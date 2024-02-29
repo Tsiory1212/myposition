@@ -3,6 +3,7 @@ import { View, Text, Button } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 function HomeScreen(props) {
@@ -27,25 +28,15 @@ function ContactScreen() {
 };
 
 
-const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App(){
   return(
     <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: 'green'
-            },
-            headerTitleStyle: {
-              color: 'white',
-              fontWeight: 'bold'
-            }
-          }}
-        >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Contact" component={ContactScreen} />
-        </Tab.Navigator>
+        <Drawer.Navigator>
+            <Drawer.Screen name="Home" component={HomeScreen} />
+            <Drawer.Screen name="Contact" component={ContactScreen} />
+        </Drawer.Navigator>
     </NavigationContainer>
   )
 }
