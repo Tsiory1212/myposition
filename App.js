@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, Button } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 
 function HomeScreen(props) {
@@ -19,19 +20,19 @@ function ContactScreen() {
   const navigation = useNavigation();
   return(
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
-      <Text>Accueil</Text>
+      <Text>Contact</Text>
       <Button title='Home' onPress={() => (navigation.goBack())} />
     </View>
   )
 };
 
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App(){
   return(
     <NavigationContainer>
-        <Stack.Navigator
+        <Tab.Navigator
           screenOptions={{
             headerStyle: {
               backgroundColor: 'green'
@@ -42,9 +43,9 @@ export default function App(){
             }
           }}
         >
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Contact" component={ContactScreen} />
-        </Stack.Navigator>
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Contact" component={ContactScreen} />
+        </Tab.Navigator>
     </NavigationContainer>
   )
 }
