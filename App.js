@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, Share } from "react-native";
 import * as Location from "expo-location";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "@expo/vector-icons/Ionicons"
+import { AntDesign } from '@expo/vector-icons';
 
+const Tab = createBottomTabNavigator();
+const home = "Acceuil";
+const contact = "Contact"
 
 export default function App(){
   const styles = StyleSheet.create({
@@ -74,11 +81,61 @@ export default function App(){
             '\naltitude : '+altitude;
   }
 
-  return(
+
+  function HomeScreen() {
+    const navigation = useNavigation();
+    return(
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
+        <ShareView></ShareView>
+      </View>
+    )
+  };
+  
+  function ContactScreen() {
+    const navigation = useNavigation();
+    return(
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
+        <ShareView></ShareView>
+      </View>
+    )
+  };
+  
+  
+  function ShareView(){
+    return (
       <View style={styles.container}>
         <Button title="Obtenir ma position" onPress={getUserLocation} />
         <Text style={styles.text}>{text}</Text>
         <Button title="Partager ma position" onPress={sharePosition} />
       </View>
+    )
+  }
+
+
+  return(
+    <NavigationContainer>
+      <Tab.Navigator
+      initialRouteName={home}
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName;
+            let routeName = route.name;
+
+            if (routeName === home) {
+              iconName = focused ? iconName = "home" : "home-outline";
+            } else if(routeName === contact) {
+              iconName = focused ? iconName = "receipt" : "receipt-outline";
+            }
+
+            return(
+              <Ionicons name={iconName} color={color} size={size} />
+            )
+          }
+        })}
+      >
+        <Tab.Screen name={home} component={HomeScreen} />
+        <Tab.Screen name={contact} component={ContactScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   )
 }
