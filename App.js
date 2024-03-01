@@ -1,42 +1,23 @@
 import * as React from 'react';
-import { View, Text, Button } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Animated, Text, useWindowDimensions, Easing } from "react-native";
 
-
-function HomeScreen(props) {
-  return(
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
-      <Text>Bonjour</Text>
-      <Text>{ JSON.stringify(props.route.params) }</Text>
-      <Button title='Home' onPress={() => (props.navigation.navigate('Home', {id: 1, name: "Laurent"}))} />
-      <Button title='Home' onPress={() => (props.navigation.navigate('Home', {id: 2, name: "Mark"}))} />
-    </View>
-  )
-};
-
-function ContactScreen() {
-  const navigation = useNavigation();
-  return(
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
-      <Text>Contact</Text>
-      <Button title='Home' onPress={() => (navigation.goBack())} />
-    </View>
-  )
-};
-
-
-const Drawer = createDrawerNavigator();
 
 export default function App(){
+  const windowHeight = Math.round(useWindowDimensions().height);
+  const heightAnimation = React.useRef(new Animated.Value(0)).current
+  
+  React.useEffect(() => {
+    Animated.loop(
+      Animated.timing(heightAnimation, {
+        toValue: windowHeight,
+        duration: 10000,
+        useNativeDriver: false,
+      })).start();
+  }, [heightAnimation, windowHeight])
+
   return(
-    <NavigationContainer>
-        <Drawer.Navigator>
-            <Drawer.Screen name="Home" component={HomeScreen} />
-            <Drawer.Screen name="Contact" component={ContactScreen} />
-        </Drawer.Navigator>
-    </NavigationContainer>
+      <Animated.View 
+        style={{ backgroundColor: "red", width: "100%", height: heightAnimation}}
+      />
   )
 }
