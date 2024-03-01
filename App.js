@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Button } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Button, Share } from "react-native";
 import * as Location from "expo-location";
-import { useState } from "react";
 
 
 export default function App(){
@@ -11,10 +11,18 @@ export default function App(){
       justifyContent: 'center',
       padding: 20,
     },
+    text: {
+      marginTop: 100,
+      marginBottom: 100,
+      fontSize: 20,
+    }
   })
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  let latitude = null;
+  let longitude = null;
+  let altitude = null;
 
   async function getUserLocation() {
       const {status} = await Location.requestForegroundPermissionsAsync();
@@ -27,17 +35,50 @@ export default function App(){
       setLocation(location);
   }
 
-  let text = 'en attente de réception...';
+  // let text = 'en attente de réception...';
+  // if (errorMsg) {
+  //   text = errorMsg;
+  // }else if (location) {
+  //   text = JSON.stringify(location, null, 2);
+  // }
+
+  useEffect(() => {
+    getUserLocation()
+  }, [])
+
+
+  async function sharePosition() {
+    try {
+      await Share.share({
+        message: `Au secour ! Je suis coincé à la position indiqué par le lien ci dessous. Cliquez sur le lien pour afficher ma position`+
+        '\n latitude : '+latitude+ 
+        '\n longitude : '+longitude+ 
+        '\n altitude : '+altitude+ 
+        '\n https://www.google.com/maps/search/?api=1&query= : '+latitude+'%2C'+longitude 
+      })
+    } catch (e) {
+      alert(e.message)
+    }
+  }
+
+  let text = 'cliquez sur le boutton "Obtenir ma position"';
   if (errorMsg) {
     text = errorMsg;
-  }else if (location) {
-    text = JSON.stringify(location, null, 2);
+  }else if (location){
+    latitude = location.coords.latitude;
+    longitude = location.coords.longitude;
+    altitude = location.coords.altitude;
+
+    text = 'latitude :'+latitude+
+            '\nlongitude : '+longitude+
+            '\naltitude : '+altitude;
   }
 
   return(
       <View style={styles.container}>
-        <Button title="Récupérer la position" onPress={getUserLocation} />
-        <Text>{text}</Text>
+        <Button title="Obtenir ma position" onPress={getUserLocation} />
+        <Text style={styles.text}>{text}</Text>
+        <Button title="Partager ma position" onPress={sharePosition} />
       </View>
   )
 }
