@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, Share } from "react-native";
+import { StyleSheet, View, Button, Text } from "react-native";
 import * as Location from "expo-location";
+import i18n from "./i18n";
+import { useEffect, useState } from "react";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { AntDesign } from '@expo/vector-icons';
+import { Share } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const home = "Acceuil";
@@ -34,7 +35,7 @@ export default function App(){
   async function getUserLocation() {
       const {status} = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg(`La permission d'accès a été réfusée`);
+        setErrorMsg( i18n.t('permission'));
         return;
       }
 
@@ -57,28 +58,28 @@ export default function App(){
   async function sharePosition() {
     try {
       await Share.share({
-        message: `Au secour ! Je suis coincé à la position indiqué par le lien ci dessous. Cliquez sur le lien pour afficher ma position`+
-        '\n latitude : '+latitude+ 
-        '\n longitude : '+longitude+ 
-        '\n altitude : '+altitude+ 
-        '\n https://www.google.com/maps/search/?api=1&query= : '+latitude+'%2C'+longitude 
+        message: `Au secour ! Je suis coincé à la position indiqué par le lien ci dessous. Cliquez sur le lien pour afficher ma position
+        \n ${i18n.t('latitude')} : ${latitude}
+        \n ${i18n.t('longitude')} : ${longitude}
+        \n ${i18n.t('altitude')} : ${altitude}
+        \n https://www.google.com/maps/search/?api=1&query= : ${latitude}%2C${longitude}`
       })
     } catch (e) {
       alert(e.message)
     }
   }
 
-  let text = 'cliquez sur le boutton "Obtenir ma position"';
+  let text = `${i18n.t('click')} "${i18n.t('addPosition')}"`;
   if (errorMsg) {
-    text = errorMsg;
+    text = i18n.t('permission');
   }else if (location){
     latitude = location.coords.latitude;
     longitude = location.coords.longitude;
     altitude = location.coords.altitude;
 
-    text = 'latitude :'+latitude+
-            '\nlongitude : '+longitude+
-            '\naltitude : '+altitude;
+    text = `${i18n.t('latitude')} :${latitude}
+            \n${i18n.t('longitude')} : ${longitude}
+            \n${i18n.t('altitude')} : ${altitude}`;
   }
 
 
@@ -104,9 +105,9 @@ export default function App(){
   function ShareView(){
     return (
       <View style={styles.container}>
-        <Button title="Obtenir ma position" onPress={getUserLocation} />
+        <Button title={i18n.t('addPosition')} onPress={getUserLocation} />
         <Text style={styles.text}>{text}</Text>
-        <Button title="Partager ma position" onPress={sharePosition} />
+        <Button title={i18n.t('sharePosition')} onPress={sharePosition} />
       </View>
     )
   }
