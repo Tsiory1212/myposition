@@ -80,7 +80,7 @@ export default function App(){
     text = `${i18n.t('latitude')} :${latitude}
             \n${i18n.t('longitude')} : ${longitude}
             \n${i18n.t('altitude')} : ${altitude}`;
-  }
+  } 
 
 
   function HomeScreen() {
