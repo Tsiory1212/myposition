@@ -1,14 +1,14 @@
 {
   "expo": {
-    "owner": "76ur",
+    "owner": "tsiory12",
     "name": "Test2",
-    "slug": "Test2",
+    "slug": "firsttestapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/myicon.webp",
+    "icon": "./assets/ico.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/myicon.webp",
+      "image": "./assets/ico.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,15 +20,21 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/myicon.webp",
+        "foregroundImage": "./assets/ico.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.tsiory12.firsttestapp"
     },
     "web": {
-      "favicon": "./assets/myicon.webp"
+      "favicon": "./assets/ico.png"
     },
     "plugins": [
       "expo-localization"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d4776b22-307b-4cc5-8235-ca87b3792a90"
+      }
+    }
   }
 }
